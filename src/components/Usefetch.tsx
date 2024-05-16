@@ -7,12 +7,12 @@ type CommentType = {
     email: string
     body: string
 }
-const App:React.FC = () => {
+
+function useFetchAPI () {
     const [postId, setId] = useState<number>(1)
     const [error, setError] = useState<Error | null>(null)
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState([] as CommentType[])
-
 
     async function fetchData(id:number){
         setLoading(true)
@@ -36,6 +36,15 @@ const App:React.FC = () => {
 
     },[postId])
 
+    return [data, loading, error, setId] as const
+    // return {data, loading, error, postId}
+}
+const App:React.FC = () => {
+
+
+    const [data, loading, error, setId] = useFetchAPI()
+    // const {data, loading, error, postId} = useFetchAPI()
+    
     const clickHandler = (id: number) => {
         setId(id)
     }
